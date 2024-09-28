@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "FirstApp",
-    "slug": "FirstApp",
+    "name": "DCal",
+    "slug": "DCal",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/image/Calculator.1024.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/image/Calculator.1024.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,20 +17,26 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/image/Calculator.1024.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.downloadmaster1.FirstApp"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/image/Calculator.1024.png"
     },
     "plugins": [
       "expo-router"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7fd64370-06b3-4cad-a28d-c8fbff418097"
+      }
     }
   }
 }

@@ -1,70 +1,116 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Text, View, TouchableOpacity, ImageBackground } from "react-native";
+import React, { useState } from "react";
+import { StatusBar } from "expo-status-bar";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const buttons = [
+  ["C", "+/-", "%", "/"],
+  ["7", "8", "9", "x"],
+  ["4", "5", "6", "-"],
+  ["1", "2", "3", "+"],
+  ["0", ".", "="],
+];
 
-export default function HomeScreen() {
+const RootLayout = () => {
+  const [currentValue, setCurrentValue] = useState("0");
+  const [operator, setOperator] = useState<any>(null);
+  const [previousValue, setPreviousValue] = useState("");
+
+  const handleTap = (value: string) => {
+    if (["+", "-", "x", "/"].includes(value)) {
+      handleOperator(value);
+    } else if (value === "C") {
+      handleClear();
+    } else if (value === "+/-") {
+      handleToggleSign();
+    } else if (value === "%") {
+      handlePercentage();
+    } else if (value === "=") {
+      handleEquals();
+    } else {
+      handleNumber(value);
+    }
+  };
+
+  const handleClear = () => {
+    setCurrentValue("0");
+    setOperator(null);
+    setPreviousValue("");
+  };
+
+  const handleToggleSign = () => {
+    if (currentValue.startsWith("-")) {
+      setCurrentValue(currentValue.substring(1));
+    } else {
+      setCurrentValue("-" + currentValue);
+    }
+  };
+
+  const handlePercentage = () => {
+    setCurrentValue((parseFloat(currentValue) / 100).toString());
+  };
+
+  const handleNumber = (value: string) => {
+    if (currentValue === "0") {
+      setCurrentValue(value);
+    } else {
+      setCurrentValue(currentValue + value);
+    }
+  };
+
+  const handleOperator = (value: string) => {
+    setOperator(value);
+    setPreviousValue(currentValue);
+    setCurrentValue("0");
+  };
+
+  const handleEquals = () => {
+    const current = parseFloat(currentValue);
+    const previous = parseFloat(previousValue);
+
+    if (operator === "+") {
+      setCurrentValue((previous + current).toString());
+    } else if (operator === "-") {
+      setCurrentValue((previous - current).toString());
+    } else if (operator === "x") {
+      setCurrentValue((previous * current).toString());
+    } else if (operator === "/") {
+      setCurrentValue((previous / current).toString());
+    }
+    setOperator(null);
+    setPreviousValue("");
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View className="h-screen w-full flex justify-end  ">
+      <StatusBar style="dark" />
+      <View className="h-[30%] w-full  justify-end px-5 py-10">
+        <Text className="text-right text-black text-5xl">{currentValue}</Text>
+      </View>
+      <View className="h-[50%] w-full shadow-sm shadow-black rounded-tr-[25px] rounded-tl-[25px] p-4 pt-10 ">
+        {buttons.map((row, rowIndex) => (
+          <View key={rowIndex} className="flex flex-row justify-between mb-4">
+            {row.map((button, buttonIndex) => (
+              <TouchableOpacity
+                onPress={() => handleTap(button)}
+                key={buttonIndex}
+                className={`w-[20%] h-[60px] bg-[#186dff] rounded-full flex items-center justify-center ${
+                  button === "=" ||
+                  button === "+" ||
+                  button === "-" ||
+                  button === "x" ||
+                  button === "/"
+                    ? "bg-orange-500"
+                    : ""
+                } ${button === "=" ? "w-[40%]" : ""} `}
+              >
+                <Text className="text-white text-center text-xl">{button}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        ))}
+      </View>
+    </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
+export default RootLayout;
