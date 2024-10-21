@@ -83,10 +83,10 @@ const RootLayout = () => {
   return (
     <View className="h-screen w-full flex justify-end  ">
       <StatusBar style="dark" />
-      <View className="h-[30%] w-full  justify-end px-5 py-10">
+      <View className="h-[40%] w-full  justify-end px-5 py-10">
         <Text className="text-right text-black text-5xl">{currentValue}</Text>
       </View>
-      <View className="h-[50%] w-full shadow-sm shadow-black rounded-tr-[25px] rounded-tl-[25px] p-4 pt-10 ">
+      <View className="h-fit w-full rounded-tr-[25px] rounded-tl-[25px] p-4 pt-10 ">
         {buttons.map((row, rowIndex) => (
           <View key={rowIndex} className="flex flex-row justify-between mb-4">
             {row.map((button, buttonIndex) => (

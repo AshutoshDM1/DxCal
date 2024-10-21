@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "DCal",
-    "slug": "DCal",
+    "name": "Dxcal",
+    "slug": "FirstApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/image/Calculator.1024.png",
